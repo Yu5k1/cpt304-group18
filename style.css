@@ -548,4 +548,8 @@ body.theme-light .bg-gradient {
   .amount {
     text-align: left;
   }
+  .form__field select option {
+    background: #1e293b;
+    color: #f8fafc;
+  }
 }
