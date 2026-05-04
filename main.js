@@ -54,9 +54,41 @@ const saveToLocalStorage = () => {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(state.transactions));
 };
 
+const VALID_CATEGORIES = [
+  "Salary", "Business", "Investments", "Housing",
+  "Food", "Transport", "Health", "Entertainment",
+  "Education", "Other"
+];
+
+const isValidTransaction = (item) => {
+  if (typeof item !== "object" || item === null) return false;
+  if (typeof item.id !== "string" || !item.id.startsWith("tx_")) return false;
+  if (typeof item.title !== "string" || item.title.trim() === "") return false;
+  if (typeof item.amount !== "number" || !isFinite(item.amount)) return false;
+  if (!VALID_CATEGORIES.includes(item.category)) return false;
+  if (typeof item.date !== "string" || isNaN(Date.parse(item.date))) return false;
+  return true;
+};
+
 const loadFromLocalStorage = () => {
-  const stored = localStorage.getItem(STORAGE_KEY);
-  state.transactions = stored ? JSON.parse(stored) : [];
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (!stored) { state.transactions = []; return; }
+    const parsed = JSON.parse(stored);
+    if (!Array.isArray(parsed)) {
+      console.warn("Storage corrupted: expected array");
+      state.transactions = [];
+      return;
+    }
+    const valid = parsed.filter(isValidTransaction);
+    if (valid.length !== parsed.length) {
+      console.warn(`Filtered ${parsed.length - valid.length} invalid records`);
+    }
+    state.transactions = valid;
+  } catch (e) {
+    console.error("Failed to load from localStorage:", e);
+    state.transactions = [];
+  }
 };
 
 const saveTheme = () => {
