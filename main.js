@@ -101,6 +101,7 @@ const setTheme = (theme) => {
   dom.themeToggleBtn.textContent =
     theme === "light" ? "Dark Mode" : "Light Mode";
   saveTheme();
+  renderChart();
 };
 
 const loadTheme = () => {
@@ -310,8 +311,8 @@ const renderTransactionItem = (tx) => {
       </div>
       <div>
         <p class="amount ${typeClass}">${formattedAmount}</p>
-        <button class="edit-btn" data-id="${tx.id}">Edit</button>
-        <button class="delete-btn" data-id="${tx.id}">Delete</button>
+        <button class="edit-btn" data-id="${tx.id}" aria-label="Edit transaction: ${tx.title}">Edit</button>
+        <button class="delete-btn" data-id="${tx.id}" aria-label="Delete transaction: ${tx.title}">Delete</button>
       </div>
     </div>
   `;
@@ -408,7 +409,10 @@ const renderChart = () => {
   const incomeHeight = (income / maxValue) * (height - 80);
   const expenseHeight = (expenses / maxValue) * (height - 80);
 
-  ctx.strokeStyle = "rgba(255,255,255,0.08)";
+  // isLight must be declared before use
+  const isLight = document.body.classList.contains("theme-light");
+
+  ctx.strokeStyle = isLight ? "rgba(15,23,42,0.15)" : "rgba(255,255,255,0.08)";
   ctx.beginPath();
   ctx.moveTo(40, baseY);
   ctx.lineTo(width - 40, baseY);
@@ -425,7 +429,7 @@ const renderChart = () => {
     expenseHeight,
   );
 
-  ctx.fillStyle = "#f8f4e9";
+  ctx.fillStyle = isLight ? "#1e293b" : "#f8f4e9";
   ctx.font = "14px sans-serif";
   ctx.fillText("Income", 170, baseY + 20);
   ctx.fillText("Expense", 160 + barWidth + gap, baseY + 20);
