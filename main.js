@@ -3,6 +3,8 @@
 const STORAGE_KEY = "financeTrackerData";
 const THEME_KEY = "financeTrackerTheme";
 
+let lastFocusedElement = null;
+
 const state = {
   transactions: [],
   filters: {
@@ -238,12 +240,35 @@ const openConfirmModal = (id) => {
   state.pendingDeleteId = id;
   dom.confirmModal.classList.add("is-open");
   dom.confirmModal.setAttribute("aria-hidden", "false");
+  dom.cancelDeleteBtn.focus();
 };
 
 const closeConfirmModal = () => {
   state.pendingDeleteId = null;
   dom.confirmModal.classList.remove("is-open");
   dom.confirmModal.setAttribute("aria-hidden", "true");
+
+  if (lastFocusedElement && typeof lastFocusedElement.focus === "function") {
+    lastFocusedElement.focus();
+    lastFocusedElement = null; 
+  }
+};
+
+const handleTabKey = (e) => {
+  if (e.key !== "Tab" || !dom.confirmModal.classList.contains("is-open")) return;
+  const focusable = dom.confirmModal.querySelectorAll(
+    'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+  );
+  if (focusable.length === 0) return;
+  const first = focusable[0];
+  const last = focusable[focusable.length - 1];
+  if (e.shiftKey && document.activeElement === first) {
+    e.preventDefault();
+    last.focus();
+  } else if (!e.shiftKey && document.activeElement === last) {
+    e.preventDefault();
+    first.focus();
+  }
 };
 
 const renderSummary = () => {
@@ -497,25 +522,29 @@ const initializeApp = () => {
   });
 
   dom.transactionsList.addEventListener("click", (e) => {
-    const deleteButton = e.target.closest(".delete-btn");
-    const editButton = e.target.closest(".edit-btn");
-    const emptyAdd = e.target.closest(".empty-add-btn");
+  const deleteButton = e.target.closest(".delete-btn");
+  const editButton = e.target.closest(".edit-btn");
+  const emptyAdd = e.target.closest(".empty-add-btn");
 
-    const deleteId = deleteButton?.dataset?.id;
-    const editId = editButton?.dataset?.id;
+  const deleteId = deleteButton?.dataset?.id;
+  const editId = editButton?.dataset?.id;
 
-    if (deleteId) {
-      openConfirmModal(deleteId);
-    }
+  if (deleteId) {
+    lastFocusedElement = document.activeElement; 
+    openConfirmModal(deleteId);
+    return; 
+  }
 
-    if (editId) {
-      startEditing(editId);
-    }
+  if (editId) {
+    startEditing(editId);
+    return;
+  }
 
-    if (emptyAdd) {
-      dom.titleInput.focus();
-    }
-  });
+  if (emptyAdd) {
+    dom.titleInput.focus();
+    return;
+  }
+});
 
   dom.filterCategory.addEventListener("change", (e) => {
     state.filters.category = e.target.value;
@@ -560,6 +589,36 @@ const initializeApp = () => {
       closeConfirmModal();
     }
   });
+  document.addEventListener("keydown", handleTabKey);
+  document.addEventListener("keydown", (e) => {
+
+    if (e.key === "Escape" && dom.confirmModal.classList.contains("is-open")) {
+
+      dom.confirmModal.classList.remove("is-open");
+      
+
+      if (lastFocusedElement && typeof lastFocusedElement.focus === "function") {
+        lastFocusedElement.focus();
+      }
+    }
+  });
 };
+
+(function() {
+    const consentBanner = document.querySelector('cookie-consent');
+    if (!consentBanner) return;
+
+    consentBanner.addEventListener('accept', (e) => {
+        console.log('Cookie 同意已记录：用户接受了所有 Cookie。');
+    });
+
+    consentBanner.addEventListener('deny', (e) => {
+        console.log('Cookie 同意已记录：用户拒绝了非必要的 Cookie。');
+    });
+
+    consentBanner.addEventListener('load', (e) => {
+        console.log('Cookie 横幅已加载并准备就绪。');
+    });
+})();
 
 initializeApp();
