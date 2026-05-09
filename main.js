@@ -33,7 +33,6 @@ const dom = {
   resetFiltersBtn: document.getElementById("resetFiltersBtn"),
   exportCsvBtn: document.getElementById("exportCsvBtn"),
   themeToggleBtn: document.getElementById("themeToggleBtn"),
-  langToggleBtn: document.getElementById("langToggleBtn"),
   transactionsList: document.getElementById("transactionsList"),
   resultsCount: document.getElementById("resultsCount"),
   totalBalance: document.getElementById("totalBalance"),
@@ -520,9 +519,6 @@ const initializeApp = () => {
   dom.themeToggleBtn.addEventListener("click", () => {
     setTheme(state.theme === "dark" ? "light" : "dark");
   });
-
-  dom.langToggleBtn.addEventListener("click", toggleLanguage);
-  applyTranslations();
 
   dom.confirmDeleteBtn.addEventListener("click", () => {
     if (state.pendingDeleteId) {
