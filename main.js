@@ -604,21 +604,4 @@ const initializeApp = () => {
   });
 };
 
-(function() {
-    const consentBanner = document.querySelector('cookie-consent');
-    if (!consentBanner) return;
-
-    consentBanner.addEventListener('accept', (e) => {
-        console.log('Cookie 同意已记录：用户接受了所有 Cookie。');
-    });
-
-    consentBanner.addEventListener('deny', (e) => {
-        console.log('Cookie 同意已记录：用户拒绝了非必要的 Cookie。');
-    });
-
-    consentBanner.addEventListener('load', (e) => {
-        console.log('Cookie 横幅已加载并准备就绪。');
-    });
-})();
-
 initializeApp();
