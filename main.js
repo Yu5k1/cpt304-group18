@@ -33,6 +33,7 @@ const dom = {
   resetFiltersBtn: document.getElementById("resetFiltersBtn"),
   exportCsvBtn: document.getElementById("exportCsvBtn"),
   themeToggleBtn: document.getElementById("themeToggleBtn"),
+  langToggleBtn: document.getElementById("langToggleBtn"),
   transactionsList: document.getElementById("transactionsList"),
   resultsCount: document.getElementById("resultsCount"),
   totalBalance: document.getElementById("totalBalance"),
@@ -48,6 +49,12 @@ const dom = {
 
 const generateID = () => {
   return `tx_${Date.now()}_${Math.random().toString(16).slice(2)}`;
+};
+
+const sanitize = (str) => {
+  const div = document.createElement("div");
+  div.textContent = str;
+  return div.innerHTML;
 };
 
 const saveToLocalStorage = () => {
@@ -270,9 +277,9 @@ const renderTransactionItem = (tx) => {
   return `
     <div class="transaction">
       <div>
-        <p class="transaction__title">${tx.title}</p>
+        <p class="transaction__title">${sanitize(tx.title)}</p>
         <div class="transaction__meta">
-          <span class="badge">${tx.category}</span>
+          <span class="badge">${sanitize(tx.category)}</span>
           <span>${formattedDate}</span>
         </div>
       </div>
@@ -514,6 +521,9 @@ const initializeApp = () => {
     setTheme(state.theme === "dark" ? "light" : "dark");
   });
 
+  dom.langToggleBtn.addEventListener("click", toggleLanguage);
+  applyTranslations();
+
   dom.confirmDeleteBtn.addEventListener("click", () => {
     if (state.pendingDeleteId) {
       deleteTransaction(state.pendingDeleteId);
@@ -530,4 +540,26 @@ const initializeApp = () => {
   });
 };
 
-initializeApp();
+if (typeof document !== "undefined" && document.getElementById("transactionForm")) {
+  initializeApp();
+}
+
+if (typeof module !== "undefined" && module.exports) {
+  module.exports = {
+    generateID,
+    saveToLocalStorage,
+    loadFromLocalStorage,
+    formatCurrency,
+    formatDate,
+    filterTransactions,
+    groupByMonth,
+    validateForm,
+    addTransaction,
+    deleteTransaction,
+    renderTransactionItem,
+    exportToCSV,
+    sanitize,
+    state,
+    dom,
+  };
+}
