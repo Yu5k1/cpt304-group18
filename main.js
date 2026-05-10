@@ -124,6 +124,12 @@ const generateID = () => {
   return `tx_${Date.now()}_${Math.random().toString(16).slice(2)}`;
 };
 
+const sanitize = (str) => {
+  const div = document.createElement("div");
+  div.textContent = str;
+  return div.innerHTML;
+};
+
 const saveToLocalStorage = () => {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(state.transactions));
 };
@@ -342,7 +348,7 @@ const renderTransactionItem = (tx) => {
   return `
     <div class="transaction">
       <div>
-        <p class="transaction__title">${tx.title}</p>
+        <p class="transaction__title">${sanitize(tx.title)}</p>
         <div class="transaction__meta">
           <span class="badge">${t(`cat_${tx.category}`) || tx.category}</span>
           <span>${formatDate(tx.date)}</span>
@@ -504,4 +510,26 @@ const initializeApp = async () => {
   dom.confirmModal.addEventListener("click", (e) => { if (e.target.dataset.close) closeConfirmModal(); });
 };
 
-initializeApp();
+if (typeof document !== "undefined" && document.getElementById("transactionForm")) {
+  initializeApp();
+}
+
+if (typeof module !== "undefined" && module.exports) {
+  module.exports = {
+    generateID,
+    saveToLocalStorage,
+    loadFromLocalStorage,
+    formatCurrency,
+    formatDate,
+    filterTransactions,
+    groupByMonth,
+    validateForm,
+    addTransaction,
+    deleteTransaction,
+    renderTransactionItem,
+    exportToCSV,
+    sanitize,
+    state,
+    dom,
+  };
+}
