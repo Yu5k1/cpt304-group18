@@ -43,6 +43,7 @@ document.body.innerHTML = `
   </div>
   <div id="toastContainer"></div>
   <div id="skeleton" class="skeleton"></div>
+  <div id="htmlRoot"></div>
 `;
 
 // Mock localStorage
