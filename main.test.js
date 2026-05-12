@@ -44,6 +44,8 @@ document.body.innerHTML = `
   <div id="toastContainer"></div>
   <div id="skeleton" class="skeleton"></div>
   <div id="htmlRoot"></div>
+  <button id="langToggleBtn">中文</button>
+  <div id="htmlRoot"></div>
 `;
 
 // Mock localStorage
