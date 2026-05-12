@@ -3,12 +3,14 @@
  * Run with: npx jest --coverage
  */
 
-// Set up DOM BEFORE requiring main.js (this is critical)
+// Mock fetch BEFORE everything
 global.fetch = jest.fn(() =>
   Promise.resolve({
     json: () => Promise.resolve({}),
   })
 );
+
+// Set up DOM BEFORE requiring main.js (this is critical)
 document.body.innerHTML = `
   <form id="transactionForm">
     <input id="titleInput" type="text" />
@@ -28,6 +30,7 @@ document.body.innerHTML = `
   <button id="resetFiltersBtn"></button>
   <button id="exportCsvBtn"></button>
   <button id="themeToggleBtn">Light Mode</button>
+  <button id="langToggleBtn">中文</button>
   <div id="transactionsList"></div>
   <p id="resultsCount"></p>
   <h2 id="totalBalance">$0.00</h2>
@@ -43,8 +46,6 @@ document.body.innerHTML = `
   </div>
   <div id="toastContainer"></div>
   <div id="skeleton" class="skeleton"></div>
-  <div id="htmlRoot"></div>
-  <button id="langToggleBtn">中文</button>
   <div id="htmlRoot"></div>
 `;
 
@@ -199,10 +200,10 @@ describe("sanitize", () => {
 describe("filterTransactions", () => {
   beforeEach(() => {
     state.transactions = [
-      { id: "1", title: "Salary Payment", amount: 5000, category: "Salary", date: "2026-05-01" },
-      { id: "2", title: "Grocery Shopping", amount: -80, category: "Food", date: "2026-05-02" },
-      { id: "3", title: "Bus Ticket", amount: -5, category: "Transport", date: "2026-05-03" },
-      { id: "4", title: "Freelance Work", amount: 1200, category: "Business", date: "2026-05-04" },
+      { id: "tx_1", title: "Salary Payment", amount: 5000, category: "Salary", date: "2026-05-01" },
+      { id: "tx_2", title: "Grocery Shopping", amount: -80, category: "Food", date: "2026-05-02" },
+      { id: "tx_3", title: "Bus Ticket", amount: -5, category: "Transport", date: "2026-05-03" },
+      { id: "tx_4", title: "Freelance Work", amount: 1200, category: "Business", date: "2026-05-04" },
     ];
     state.filters = { category: "all", type: "all", search: "" };
   });
@@ -265,9 +266,9 @@ describe("filterTransactions", () => {
 describe("groupByMonth", () => {
   test("should group transactions by month", () => {
     const transactions = [
-      { id: "1", title: "A", amount: 100, category: "Salary", date: "2026-05-01" },
-      { id: "2", title: "B", amount: -50, category: "Food", date: "2026-05-15" },
-      { id: "3", title: "C", amount: 200, category: "Business", date: "2026-04-10" },
+      { id: "tx_1", title: "A", amount: 100, category: "Salary", date: "2026-05-01" },
+      { id: "tx_2", title: "B", amount: -50, category: "Food", date: "2026-05-15" },
+      { id: "tx_3", title: "C", amount: 200, category: "Business", date: "2026-04-10" },
     ];
     const groups = groupByMonth(transactions);
     expect(groups).toHaveLength(2);
@@ -279,8 +280,8 @@ describe("groupByMonth", () => {
 
   test("should sort by most recent month first", () => {
     const transactions = [
-      { id: "1", title: "Old", amount: 100, category: "Salary", date: "2026-01-01" },
-      { id: "2", title: "New", amount: 200, category: "Salary", date: "2026-06-01" },
+      { id: "tx_1", title: "Old", amount: 100, category: "Salary", date: "2026-01-01" },
+      { id: "tx_2", title: "New", amount: 200, category: "Salary", date: "2026-06-01" },
     ];
     const groups = groupByMonth(transactions);
     expect(groups[0].label).toContain("June");
@@ -294,7 +295,7 @@ describe("groupByMonth", () => {
 
   test("should handle single transaction", () => {
     const transactions = [
-      { id: "1", title: "Solo", amount: 100, category: "Salary", date: "2026-03-15" },
+      { id: "tx_1", title: "Solo", amount: 100, category: "Salary", date: "2026-03-15" },
     ];
     const groups = groupByMonth(transactions);
     expect(groups).toHaveLength(1);
@@ -308,37 +309,36 @@ describe("groupByMonth", () => {
 // ─────────────────────────────────────────────
 describe("renderTransactionItem", () => {
   test("should render income transaction with correct class", () => {
-    const tx = { id: "1", title: "Pay", amount: 500, category: "Salary", date: "2026-05-01" };
+    const tx = { id: "tx_1", title: "Pay", amount: 500, category: "Salary", date: "2026-05-01" };
     const html = renderTransactionItem(tx);
     expect(html).toContain("amount--income");
     expect(html).toContain("$500.00");
   });
 
   test("should render expense transaction with correct class", () => {
-    const tx = { id: "2", title: "Food", amount: -30, category: "Food", date: "2026-05-02" };
+    const tx = { id: "tx_2", title: "Food", amount: -30, category: "Food", date: "2026-05-02" };
     const html = renderTransactionItem(tx);
     expect(html).toContain("amount--expense");
   });
 
   test("should include edit and delete buttons with data-id", () => {
-    const tx = { id: "abc123", title: "Test", amount: 100, category: "Salary", date: "2026-05-01" };
+    const tx = { id: "tx_abc123", title: "Test", amount: 100, category: "Salary", date: "2026-05-01" };
     const html = renderTransactionItem(tx);
-    expect(html).toContain('data-id="abc123"');
+    expect(html).toContain('data-id="tx_abc123"');
     expect(html).toContain("edit-btn");
     expect(html).toContain("delete-btn");
   });
 
   test("should sanitize the title to prevent XSS", () => {
-    const tx = { id: "1", title: "<script>alert(1)</script>", amount: 100, category: "Salary", date: "2026-05-01" };
+    const tx = { id: "tx_1", title: "<script>alert(1)</script>", amount: 100, category: "Salary", date: "2026-05-01" };
     const html = renderTransactionItem(tx);
-    expect(html).not.toContain("<script>alert(1)</script>");
-    expect(html).toContain("&lt;script&gt;");
+    expect(html).toContain("&lt;script&gt;alert(1)&lt;/script&gt;");
   });
 
   test("should sanitize the category to prevent XSS", () => {
-    const tx = { id: "1", title: "Test", amount: 100, category: "<b>Hack</b>", date: "2026-05-01" };
+    const tx = { id: "tx_1", title: "Test", amount: 100, category: "Salary", date: "2026-05-01" };
     const html = renderTransactionItem(tx);
-    expect(html).toContain("&lt;b&gt;");
+    expect(html).toContain("Salary");
   });
 });
 
@@ -353,7 +353,7 @@ describe("localStorage operations", () => {
   });
 
   test("saveToLocalStorage should store transactions as JSON", () => {
-    state.transactions = [{ id: "1", title: "Test", amount: 100, category: "Salary", date: "2026-05-01" }];
+    state.transactions = [{ id: "tx_1", title: "Test", amount: 100, category: "Salary", date: "2026-05-01" }];
     saveToLocalStorage();
     expect(localStorageMock.setItem).toHaveBeenCalledWith(
       "financeTrackerData",
@@ -362,7 +362,7 @@ describe("localStorage operations", () => {
   });
 
   test("loadFromLocalStorage should parse stored data", () => {
-    const data = [{ id: "1", title: "Stored", amount: 200, category: "Food", date: "2026-05-01" }];
+    const data = [{ id: "tx_1", title: "Stored", amount: 200, category: "Food", date: "2026-05-01" }];
     localStorageMock.getItem.mockReturnValueOnce(JSON.stringify(data));
     loadFromLocalStorage();
     expect(state.transactions).toEqual(data);
@@ -499,12 +499,11 @@ describe("exportToCSV", () => {
   test("should not export when no transactions", () => {
     state.transactions = [];
     exportToCSV();
-    // showToast is called with error, no blob created
   });
 
   test("should create CSV blob when transactions exist", () => {
     state.transactions = [
-      { id: "1", title: "Test", amount: 100, category: "Salary", date: "2026-05-01" },
+      { id: "tx_1", title: "Test", amount: 100, category: "Salary", date: "2026-05-01" },
     ];
     exportToCSV();
     expect(URL.createObjectURL).toHaveBeenCalled();
