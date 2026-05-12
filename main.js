@@ -399,6 +399,10 @@ const renderChart = () => {
   ctx.fillText("Expense", 160 + barWidth + gap, baseY + 20);
 
   ctx.fillText(formatCurrency(income), 150, baseY - incomeHeight - 10);
+  const incomeFallback = document.getElementById('canvasIncomeFallback');
+const expenseFallback = document.getElementById('canvasExpenseFallback');
+if (incomeFallback) incomeFallback.textContent = formatCurrency(income);
+if (expenseFallback) expenseFallback.textContent = formatCurrency(expenses);
   ctx.fillText(
     formatCurrency(expenses),
     150 + barWidth + gap,
