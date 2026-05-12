@@ -4,6 +4,11 @@
  */
 
 // Set up DOM BEFORE requiring main.js (this is critical)
+global.fetch = jest.fn(() =>
+  Promise.resolve({
+    json: () => Promise.resolve({}),
+  })
+);
 document.body.innerHTML = `
   <form id="transactionForm">
     <input id="titleInput" type="text" />
