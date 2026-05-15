@@ -559,3 +559,39 @@ body.theme-light .bg-gradient {
   clip: rect(0, 0, 0, 0);
   border: 0;
 }
+.cookie-banner {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+  background: var(--bg-accent);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 16px;
+  z-index: 9999; 
+  display: none;
+  backdrop-filter: blur(12px); 
+  box-shadow: var(--shadow); 
+}
+
+.cookie-banner.show {
+  display: block !important; 
+}
+
+.cookie-content {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.cookie-content p {
+  flex: 1;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.cookie-content a {
+  color: var(--primary);
+  text-decoration: underline;
+}

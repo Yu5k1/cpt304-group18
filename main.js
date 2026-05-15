@@ -535,3 +535,24 @@ const initializeApp = () => {
 };
 
 initializeApp();
+document.addEventListener('DOMContentLoaded', () => {
+  const cookieBanner = document.getElementById('cookieBanner');
+  const acceptCookieBtn = document.getElementById('acceptCookieBtn');
+  const COOKIE_CONSENT_KEY = 'cookieConsentAccepted';
+
+  if (!cookieBanner || !acceptCookieBtn) {
+    console.warn('Cookie banner elements not found');
+    return;
+  }
+
+  if (!localStorage.getItem(COOKIE_CONSENT_KEY)) {
+    setTimeout(() => {
+      cookieBanner.classList.add('show');
+    }, 500);
+  }
+
+  acceptCookieBtn.addEventListener('click', () => {
+    localStorage.setItem(COOKIE_CONSENT_KEY, 'true');
+    cookieBanner.classList.remove('show');
+  });
+});
