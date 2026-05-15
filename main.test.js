@@ -527,3 +527,63 @@ describe("state", () => {
     expect(state.editingId).toBeNull();
   });
 });
+// ─────────────────────────────────────────────
+// startEditing
+// ─────────────────────────────────────────────
+describe("startEditing", () => {
+  test("should populate form with transaction data", () => {
+    state.transactions = [
+      { id: "tx_1", title: "Edit Me", amount: 100, category: "Salary", date: "2026-05-01" }
+    ];
+    const { startEditing } = require("./main");
+    startEditing("tx_1");
+    expect(dom.titleInput.value).toBe("Edit Me");
+    expect(dom.amountInput.value).toBe("100");
+  });
+
+  test("should do nothing if id not found", () => {
+    const { startEditing } = require("./main");
+    startEditing("nonexistent");
+    expect(dom.submitBtn.textContent).toBeTruthy();
+  });
+});
+
+// ─────────────────────────────────────────────
+// openConfirmModal / closeConfirmModal
+// ─────────────────────────────────────────────
+describe("modal", () => {
+  const { openConfirmModal, closeConfirmModal } = require("./main");
+
+  test("openConfirmModal should add is-open class", () => {
+    openConfirmModal("tx_1");
+    expect(dom.confirmModal.classList.contains("is-open")).toBe(true);
+    expect(state.pendingDeleteId).toBe("tx_1");
+  });
+
+  test("closeConfirmModal should remove is-open class", () => {
+    openConfirmModal("tx_1");
+    closeConfirmModal();
+    expect(dom.confirmModal.classList.contains("is-open")).toBe(false);
+    expect(state.pendingDeleteId).toBeNull();
+  });
+});
+
+// ─────────────────────────────────────────────
+// handleTabKey
+// ─────────────────────────────────────────────
+describe("handleTabKey", () => {
+  const { handleTabKey, openConfirmModal } = require("./main");
+
+  test("should do nothing if modal is not open", () => {
+    const e = { key: "Tab", shiftKey: false, preventDefault: jest.fn() };
+    handleTabKey(e);
+    expect(e.preventDefault).not.toHaveBeenCalled();
+  });
+
+  test("should do nothing if key is not Tab", () => {
+    openConfirmModal("tx_1");
+    const e = { key: "Enter", shiftKey: false, preventDefault: jest.fn() };
+    handleTabKey(e);
+    expect(e.preventDefault).not.toHaveBeenCalled();
+  });
+});
