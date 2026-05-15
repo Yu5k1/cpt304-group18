@@ -1,0 +1,25 @@
+{
+  "name": "cpt304-group18",
+  "version": "1.0.0",
+  "description": "A portfolio-level personal finance management application built with HTML, CSS, and Vanilla JavaScript.  \r This project was intentionally developed without frameworks or third-party libraries to demonstrate a strong understanding of core front-end fundamentals and application architecture.",
+  "main": "main.js",
+  "scripts": {
+  "test": "jest --coverage"
+},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Yu5k1/cpt304-group18.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Yu5k1/cpt304-group18/issues"
+  },
+  "homepage": "https://github.com/Yu5k1/cpt304-group18#readme",
+  "devDependencies": {
+    "jest": "^30.3.0",
+    "jest-environment-jsdom": "^30.3.0"
+  }
+}
