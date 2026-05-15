@@ -3,20 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Privacy Policy</title>
+    <title>Privacy Policy | Advanced Finance Tracker</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: white;
+            min-height: 100vh;
+            padding: 40px;
+            font-family: sans-serif;
+        }
+        .privacy-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255,255,255,0.05);
+            padding: 30px;
+            border-radius: 16px;
+        }
+        h1 { color: #60a5fa; margin-top:0; }
+        a { color: #60a5fa; text-decoration: underline; }
+        .back-btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: #4f46e5;
+            color: white;
+            border-radius: 8px;
+            text-decoration: none;
+        }
+    </style>
 </head>
 <body>
-    <div class="app">
-        <h1 class="app__title">Privacy Policy</h1>
-        <div class="card">
-            <p>This Advanced Personal Finance Tracker only stores user transaction data and theme preferences locally in your browser using Local Storage.</p>
-            <br>
-            <p>No personal data is sent to any external server, no third-party tracking cookies are used, and all your financial information remains private on your own device.</p>
-            <br>
-            <p>By using this website, you agree to the use of essential local storage cookies to maintain application functionality.</p>
-        </div>
-        <a href="index.html" class="btn btn--ghost" style="width: fit-content; margin-top:20px;">Back to Home</a>
+    <div class="privacy-container">
+        <h1>Privacy Policy</h1>
+        <p>This Advanced Finance Tracker is designed to prioritize your privacy.</p>
+        <h2>Data Storage</h2>
+        <p>All financial data, including transactions, income, and expenses, is stored locally in your browser using Local Storage. No data is sent to external servers, third parties, or cloud services.</p>
+        <h2>Cookies & Local Storage</h2>
+        <p>This site uses essential local storage cookies only to:</p>
+        <ul>
+            <li>Save your transaction history and preferences</li>
+            <li>Remember your cookie consent choice</li>
+        </ul>
+        <p>No tracking cookies or analytics cookies are used.</p>
+        <h2>Your Rights</h2>
+        <p>You can clear all stored data at any time by clearing your browser's local storage for this site.</p>
+        <a href="index.html" class="back-btn">← Back to Finance Tracker</a>
     </div>
 </body>
 </html>

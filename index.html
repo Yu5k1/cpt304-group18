@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" id="htmlRoot">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <a href="#transactionForm" class="skip-link" data-i18n="skipLink">Skip to main content</a>
     <div class="bg-gradient"></div>
     <div class="skeleton" id="skeleton" aria-hidden="true">
       <div class="skeleton__block"></div>
@@ -18,23 +17,20 @@
     <div class="app">
       <header class="app__header">
         <div>
-          <p class="app__eyebrow" data-i18n="appEyebrow">Personal Finance</p>
-          <h1 class="app__title" data-i18n="appTitle">Advanced Finance Tracker</h1>
-          <p class="app__subtitle" data-i18n="appSubtitle">
+          <p class="app__eyebrow">Personal Finance</p>
+          <h1 class="app__title">Advanced Finance Tracker</h1>
+          <p class="app__subtitle">
             Track income, expenses, and your balance with clarity.
           </p>
         </div>
         <div class="app__actions">
-          <button class="btn btn--ghost" id="langToggleBtn" type="button">
-            中文
-          </button>
           <button class="btn btn--ghost" id="themeToggleBtn" type="button">
             Light Mode
           </button>
-          <button class="btn btn--accent" id="exportCsvBtn" type="button" data-i18n="exportCsv">
+          <button class="btn btn--accent" id="exportCsvBtn" type="button">
             Export CSV
           </button>
-          <button class="btn btn--ghost" id="resetFiltersBtn" type="button" data-i18n="resetFilters">
+          <button class="btn btn--ghost" id="resetFiltersBtn" type="button">
             Reset Filters
           </button>
         </div>
@@ -42,17 +38,17 @@
 
       <section class="summary">
         <div class="card summary__card">
-          <p class="summary__label" data-i18n="totalBalance">Total Balance</p>
+          <p class="summary__label">Total Balance</p>
           <h2 class="summary__value" id="totalBalance">$0.00</h2>
         </div>
         <div class="card summary__card">
-          <p class="summary__label" data-i18n="totalIncome">Total Income</p>
+          <p class="summary__label">Total Income</p>
           <h2 class="summary__value summary__value--income" id="totalIncome">
             $0.00
           </h2>
         </div>
         <div class="card summary__card">
-          <p class="summary__label" data-i18n="totalExpenses">Total Expenses</p>
+          <p class="summary__label">Total Expenses</p>
           <h2 class="summary__value summary__value--expense" id="totalExpenses">
             $0.00
           </h2>
@@ -61,8 +57,8 @@
 
       <section class="card chart">
         <div class="transactions__header">
-          <h3 class="section-title" data-i18n="cashFlow">Cash Flow Overview</h3>
-          <p class="transactions__meta" data-i18n="incomeVsExpense">Income vs Expense</p>
+          <h3 class="section-title">Cash Flow Overview</h3>
+          <p class="transactions__meta">Income vs Expense</p>
         </div>
         <canvas 
   id="financeChart" 
@@ -92,36 +88,34 @@
 
       <section class="grid">
         <div class="card form">
-          <h3 class="section-title" data-i18n="addTransaction">Add Transaction</h3>
+          <h3 class="section-title">Add Transaction</h3>
           <form id="transactionForm" class="form__grid" autocomplete="off">
             <label class="form__field">
-              <span data-i18n="titleLabel">Title</span>
+              <span>Title</span>
               <input
                 id="titleInput"
                 type="text"
                 placeholder="e.g., Freelance Payment"
-                data-i18n-placeholder="titlePlaceholder"
                 required
               />
               <small class="error" id="titleError"></small>
             </label>
 
             <label class="form__field">
-              <span data-i18n="amountLabel">Amount</span>
+              <span>Amount</span>
               <input
                 id="amountInput"
                 type="number"
                 placeholder="e.g., 1200 or -45"
-                data-i18n-placeholder="amountPlaceholder"
                 required
               />
               <small class="error" id="amountError"></small>
             </label>
 
             <label class="form__field">
-              <span data-i18n="categoryLabel">Category</span>
+              <span>Category</span>
               <select id="categoryInput" required>
-                <option value="" disabled selected data-i18n="selectCategory">Select category</option>
+                <option value="" disabled selected>Select category</option>
                 <option>Salary</option>
                 <option>Business</option>
                 <option>Investments</option>
@@ -137,20 +131,19 @@
             </label>
 
             <label class="form__field">
-              <span data-i18n="dateLabel">Date</span>
+              <span>Date</span>
               <input id="dateInput" type="date" required />
               <small class="error" id="dateError"></small>
             </label>
 
             <div class="form__actions">
-              <button class="btn btn--primary" type="submit" id="submitBtn" data-i18n="addTransaction">
+              <button class="btn btn--primary" type="submit" id="submitBtn">
                 Add Transaction
               </button>
               <button
                 class="btn btn--ghost"
                 type="button"
                 id="cancelEditBtn"
-                data-i18n="cancelEdit"
                 hidden
               >
                 Cancel Edit
@@ -160,12 +153,12 @@
         </div>
 
         <div class="card filters">
-          <h3 class="section-title" data-i18n="filtersTitle">Filters & Search</h3>
+          <h3 class="section-title">Filters & Search</h3>
           <div class="filters__grid">
             <label class="form__field">
-              <span data-i18n="filterCategory">Category</span>
+              <span>Category</span>
               <select id="filterCategory">
-                <option value="all" data-i18n="allCategories">All categories</option>
+                <option value="all">All categories</option>
                 <option>Salary</option>
                 <option>Business</option>
                 <option>Investments</option>
@@ -180,21 +173,20 @@
             </label>
 
             <label class="form__field">
-              <span data-i18n="filterType">Type</span>
+              <span>Type</span>
               <select id="filterType">
-                <option value="all" data-i18n="filterAll">All</option>
-                <option value="income" data-i18n="filterIncome">Income</option>
-                <option value="expense" data-i18n="filterExpense">Expense</option>
+                <option value="all">All</option>
+                <option value="income">Income</option>
+                <option value="expense">Expense</option>
               </select>
             </label>
 
             <label class="form__field form__field--full">
-              <span data-i18n="searchLabel">Search by title</span>
+              <span>Search by title</span>
               <input
                 id="searchInput"
                 type="text"
                 placeholder="Start typing..."
-                data-i18n-placeholder="searchPlaceholder"
               />
             </label>
           </div>
@@ -203,15 +195,15 @@
 
       <section class="card transactions">
         <div class="transactions__header">
-          <h3 class="section-title" data-i18n="transactionsTitle">Transactions</h3>
+          <h3 class="section-title">Transactions</h3>
           <p class="transactions__meta" id="resultsCount">0 results</p>
         </div>
 
         <div class="transactions__list" id="transactionsList">
           <div class="transactions__empty">
             <div class="empty__icon">+</div>
-            <p data-i18n="noTransactions">No transactions yet. Add your first one to get started.</p>
-            <button class="btn btn--accent empty-add-btn" type="button" data-i18n="addFirst">
+            <p>No transactions yet. Add your first one to get started.</p>
+            <button class="btn btn--accent empty-add-btn" type="button">
               Add First Transaction
             </button>
           </div>
@@ -227,13 +219,13 @@
         aria-modal="true"
         aria-labelledby="confirmTitle"
       >
-        <h3 class="section-title" id="confirmTitle" data-i18n="deleteTitle">Delete transaction?</h3>
-        <p class="modal__text" data-i18n="deleteText">This action cannot be undone.</p>
+        <h3 class="section-title" id="confirmTitle">Delete transaction?</h3>
+        <p class="modal__text">This action cannot be undone.</p>
         <div class="modal__actions">
-          <button class="btn btn--ghost" id="cancelDeleteBtn" type="button" data-i18n="cancel">
+          <button class="btn btn--ghost" id="cancelDeleteBtn" type="button">
             Cancel
           </button>
-          <button class="btn btn--danger" id="confirmDeleteBtn" type="button" data-i18n="delete">
+          <button class="btn btn--danger" id="confirmDeleteBtn" type="button">
             Delete
           </button>
         </div>
@@ -243,16 +235,27 @@
     <div class="toast-container" id="toastContainer"></div>
 
     <script src="main.js"></script>
-      <!-- Cookie Banner Start -->
-<div id="cookieBanner" class="cookie-banner">
-  <div class="cookie-content">
-    <p>
-      This website uses local storage cookies to save your financial preferences and transaction data. 
-      By continuing to use this site, you agree to our <a href="privacy.html">Privacy Policy</a>.
-    </p>
-    <button id="acceptCookieBtn" class="btn btn--primary">Accept</button>
-  </div>
+<div id="cookieTip" style="position:fixed; bottom:20px; left:20px; right:20px; background:#222; color:#fff; padding:16px; border-radius:12px; z-index:9999; display:none; display:flex; gap:16px; align-items:center; flex-wrap:wrap;">
+  <p style="margin:0; font-size:14px; flex:1;">
+    This site uses local storage to save your financial data and preferences. By continuing to use this site, you agree to our <a href="privacy.html" style="color:#60a5fa; text-decoration:underline;">Privacy Policy</a>.
+  </p>
+  <button id="cookieOK" style="background:#4f46e5; color:white; border:none; padding:8px 16px; border-radius:8px; cursor:pointer;">I understand</button>
 </div>
-<!-- Cookie Banner End -->
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const tip = document.getElementById('cookieTip');
+  const btn = document.getElementById('cookieOK');
+
+  if (!localStorage.getItem('cookie_ok')) {
+    tip.style.display = 'flex';
+  }
+
+  btn.onclick = function () {
+    localStorage.setItem('cookie_ok', 'yes');
+    tip.style.display = 'none';
+  };
+});
+</script>
   </body>
 </html>
