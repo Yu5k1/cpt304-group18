@@ -586,6 +586,10 @@ if (typeof module !== "undefined" && module.exports) {
     renderTransactionItem,
     exportToCSV,
     sanitize,
+    startEditing,
+    openConfirmModal,
+    closeConfirmModal,
+    handleTabKey,
     state,
     dom,
   };
