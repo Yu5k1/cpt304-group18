@@ -561,24 +561,15 @@ const initializeApp = async () => {
       closeConfirmModal();
     }
   });
-  document.addEventListener("keydown", handleTabKey);
-  document.addEventListener("keydown", (e) => {
-
-    if (e.key === "Escape" && dom.confirmModal.classList.contains("is-open")) {
-
-      dom.confirmModal.classList.remove("is-open");
-      
-
-      if (lastFocusedElement && typeof lastFocusedElement.focus === "function") {
-        lastFocusedElement.focus();
-      }
-    }
-  });
 };
 
-if (typeof document !== "undefined" && document.getElementById("transactionForm")) {
-  initializeApp();
-}
+initializeApp();
+document.addEventListener("keydown", handleTabKey);
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && dom.confirmModal.classList.contains("is-open")) {
+    closeConfirmModal();
+  }
+});
 
 if (typeof module !== "undefined" && module.exports) {
   module.exports = {
