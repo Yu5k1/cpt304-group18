@@ -64,11 +64,30 @@
           <h3 class="section-title" data-i18n="cashFlow">Cash Flow Overview</h3>
           <p class="transactions__meta" data-i18n="incomeVsExpense">Income vs Expense</p>
         </div>
-        <canvas id="financeChart" width="800" height="260"
-          role="img"
-          aria-label="Bar chart comparing total income and total expenses">
-          <p>Chart showing income versus expenses.</p>
-        </canvas>
+        <canvas 
+  id="financeChart" 
+  role="img" 
+  aria-label="Finance chart showing total income and total expenses bar comparison.">
+  <table class="sr-only">
+    <caption>Income and Expense Summary</caption>
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Amount (USD)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Total Income</td>
+        <td id="canvasIncomeFallback">0</td>
+      </tr>
+      <tr>
+        <td>Total Expenses</td>
+        <td id="canvasExpenseFallback">0</td>
+      </tr>
+    </tbody>
+  </table>
+</canvas>
       </section>
 
       <section class="grid">

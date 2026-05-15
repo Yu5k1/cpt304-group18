@@ -632,9 +632,13 @@ body.theme-light #financeChart {
   }
   .grid { grid-template-columns: 1fr; }
 }
-
-@media (max-width: 600px) {
-  body { padding: 18px; }
-  .transaction { grid-template-columns: 1fr; }
-  .amount { text-align: left; }
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
 }
