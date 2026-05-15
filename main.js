@@ -564,3 +564,29 @@ const initializeApp = async () => {
 };
 
 initializeApp();
+document.addEventListener("keydown", handleTabKey);
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && dom.confirmModal.classList.contains("is-open")) {
+    closeConfirmModal();
+  }
+});
+
+if (typeof module !== "undefined" && module.exports) {
+  module.exports = {
+    generateID,
+    saveToLocalStorage,
+    loadFromLocalStorage,
+    formatCurrency,
+    formatDate,
+    filterTransactions,
+    groupByMonth,
+    validateForm,
+    addTransaction,
+    deleteTransaction,
+    renderTransactionItem,
+    exportToCSV,
+    sanitize,
+    state,
+    dom,
+  };
+}
