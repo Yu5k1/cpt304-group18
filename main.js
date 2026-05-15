@@ -4,6 +4,8 @@ const STORAGE_KEY = "financeTrackerData";
 const THEME_KEY = "financeTrackerTheme";
 const LANG_KEY = "financeTrackerLang";
 
+let lastFocusedElement = null;
+
 const state = {
   transactions: [],
   filters: {
@@ -303,6 +305,28 @@ const closeConfirmModal = () => {
   state.pendingDeleteId = null;
   dom.confirmModal.classList.remove("is-open");
   dom.confirmModal.setAttribute("aria-hidden", "true");
+
+  if (lastFocusedElement && typeof lastFocusedElement.focus === "function") {
+    lastFocusedElement.focus();
+    lastFocusedElement = null; 
+  }
+};
+
+const handleTabKey = (e) => {
+  if (e.key !== "Tab" || !dom.confirmModal.classList.contains("is-open")) return;
+  const focusable = dom.confirmModal.querySelectorAll(
+    'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+  );
+  if (focusable.length === 0) return;
+  const first = focusable[0];
+  const last = focusable[focusable.length - 1];
+  if (e.shiftKey && document.activeElement === first) {
+    e.preventDefault();
+    last.focus();
+  } else if (!e.shiftKey && document.activeElement === last) {
+    e.preventDefault();
+    first.focus();
+  }
 };
 
 // =====================
@@ -478,13 +502,29 @@ const initializeApp = async () => {
   dom.cancelEditBtn.addEventListener("click", resetFormState);
 
   dom.transactionsList.addEventListener("click", (e) => {
-    const deleteButton = e.target.closest(".delete-btn");
-    const editButton = e.target.closest(".edit-btn");
-    const emptyAdd = e.target.closest(".empty-add-btn");
-    if (deleteButton?.dataset?.id) openConfirmModal(deleteButton.dataset.id);
-    if (editButton?.dataset?.id) startEditing(editButton.dataset.id);
-    if (emptyAdd) dom.titleInput.focus();
-  });
+  const deleteButton = e.target.closest(".delete-btn");
+  const editButton = e.target.closest(".edit-btn");
+  const emptyAdd = e.target.closest(".empty-add-btn");
+
+  const deleteId = deleteButton?.dataset?.id;
+  const editId = editButton?.dataset?.id;
+
+  if (deleteId) {
+    lastFocusedElement = document.activeElement; 
+    openConfirmModal(deleteId);
+    return; 
+  }
+
+  if (editId) {
+    startEditing(editId);
+    return;
+  }
+
+  if (emptyAdd) {
+    dom.titleInput.focus();
+    return;
+  }
+});
 
   dom.filterCategory.addEventListener("change", (e) => { state.filters.category = e.target.value; renderTransactions(); });
   dom.filterType.addEventListener("change", (e) => { state.filters.type = e.target.value; renderTransactions(); });
@@ -507,7 +547,25 @@ const initializeApp = async () => {
     closeConfirmModal();
   });
   dom.cancelDeleteBtn.addEventListener("click", closeConfirmModal);
-  dom.confirmModal.addEventListener("click", (e) => { if (e.target.dataset.close) closeConfirmModal(); });
+
+  dom.confirmModal.addEventListener("click", (e) => {
+    if (e.target.dataset.close) {
+      closeConfirmModal();
+    }
+  });
+  document.addEventListener("keydown", handleTabKey);
+  document.addEventListener("keydown", (e) => {
+
+    if (e.key === "Escape" && dom.confirmModal.classList.contains("is-open")) {
+
+      dom.confirmModal.classList.remove("is-open");
+      
+
+      if (lastFocusedElement && typeof lastFocusedElement.focus === "function") {
+        lastFocusedElement.focus();
+      }
+    }
+  });
 };
 
 if (typeof document !== "undefined" && document.getElementById("transactionForm")) {
