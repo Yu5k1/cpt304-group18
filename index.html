@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" id="htmlRoot">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
+    <a href="#transactionForm" class="skip-link">Skip to main content</a>
     <div class="bg-gradient"></div>
     <div class="skeleton" id="skeleton" aria-hidden="true">
       <div class="skeleton__block"></div>
@@ -17,20 +18,23 @@
     <div class="app">
       <header class="app__header">
         <div>
-          <p class="app__eyebrow">Personal Finance</p>
-          <h1 class="app__title">Advanced Finance Tracker</h1>
-          <p class="app__subtitle">
+          <p class="app__eyebrow" data-i18n="appEyebrow">Personal Finance</p>
+          <h1 class="app__title" data-i18n="appTitle">Advanced Finance Tracker</h1>
+          <p class="app__subtitle" data-i18n="appSubtitle">
             Track income, expenses, and your balance with clarity.
           </p>
         </div>
         <div class="app__actions">
+          <button class="btn btn--ghost" id="langToggleBtn" type="button">
+            中文
+          </button>
           <button class="btn btn--ghost" id="themeToggleBtn" type="button">
             Light Mode
           </button>
-          <button class="btn btn--accent" id="exportCsvBtn" type="button">
+          <button class="btn btn--accent" id="exportCsvBtn" type="button" data-i18n="exportCsv">
             Export CSV
           </button>
-          <button class="btn btn--ghost" id="resetFiltersBtn" type="button">
+          <button class="btn btn--ghost" id="resetFiltersBtn" type="button" data-i18n="resetFilters">
             Reset Filters
           </button>
         </div>
@@ -38,17 +42,17 @@
 
       <section class="summary">
         <div class="card summary__card">
-          <p class="summary__label">Total Balance</p>
+          <p class="summary__label" data-i18n="totalBalance">Total Balance</p>
           <h2 class="summary__value" id="totalBalance">$0.00</h2>
         </div>
         <div class="card summary__card">
-          <p class="summary__label">Total Income</p>
+          <p class="summary__label" data-i18n="totalIncome">Total Income</p>
           <h2 class="summary__value summary__value--income" id="totalIncome">
             $0.00
           </h2>
         </div>
         <div class="card summary__card">
-          <p class="summary__label">Total Expenses</p>
+          <p class="summary__label" data-i18n="totalExpenses">Total Expenses</p>
           <h2 class="summary__value summary__value--expense" id="totalExpenses">
             $0.00
           </h2>
@@ -57,65 +61,67 @@
 
       <section class="card chart">
         <div class="transactions__header">
-          <h3 class="section-title">Cash Flow Overview</h3>
-          <p class="transactions__meta">Income vs Expense</p>
+          <h3 class="section-title" data-i18n="cashFlow">Cash Flow Overview</h3>
+          <p class="transactions__meta" data-i18n="incomeVsExpense">Income vs Expense</p>
         </div>
-        <canvas 
-  id="financeChart" 
-  role="img" 
-  aria-label="Finance chart showing total income and total expenses bar comparison.">
-  <table class="sr-only">
-    <caption>Income and Expense Summary</caption>
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Amount (USD)</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>Total Income</td>
-        <td id="canvasIncomeFallback">0</td>
-      </tr>
-      <tr>
-        <td>Total Expenses</td>
-        <td id="canvasExpenseFallback">0</td>
-      </tr>
-    </tbody>
-  </table>
-</canvas>
+        <canvas
+          id="financeChart"
+          role="img"
+          aria-label="Finance chart showing total income and total expenses bar comparison.">
+          <table class="sr-only">
+            <caption>Income and Expense Summary</caption>
+            <thead>
+              <tr>
+                <th>Type</th>
+                <th>Amount (USD)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Total Income</td>
+                <td id="canvasIncomeFallback">0</td>
+              </tr>
+              <tr>
+                <td>Total Expenses</td>
+                <td id="canvasExpenseFallback">0</td>
+              </tr>
+            </tbody>
+          </table>
+        </canvas>
       </section>
 
       <section class="grid">
         <div class="card form">
-          <h3 class="section-title">Add Transaction</h3>
+          <h3 class="section-title" data-i18n="addTransaction">Add Transaction</h3>
           <form id="transactionForm" class="form__grid" autocomplete="off">
             <label class="form__field">
-              <span>Title</span>
+              <span data-i18n="titleLabel">Title</span>
               <input
                 id="titleInput"
                 type="text"
                 placeholder="e.g., Freelance Payment"
+                data-i18n-placeholder="titlePlaceholder"
                 required
               />
               <small class="error" id="titleError"></small>
             </label>
 
             <label class="form__field">
-              <span>Amount</span>
+              <span data-i18n="amountLabel">Amount</span>
               <input
                 id="amountInput"
                 type="number"
                 placeholder="e.g., 1200 or -45"
+                data-i18n-placeholder="amountPlaceholder"
                 required
               />
               <small class="error" id="amountError"></small>
             </label>
 
             <label class="form__field">
-              <span>Category</span>
+              <span data-i18n="categoryLabel">Category</span>
               <select id="categoryInput" required>
-                <option value="" disabled selected>Select category</option>
+                <option value="" disabled selected data-i18n="selectCategory">Select category</option>
                 <option>Salary</option>
                 <option>Business</option>
                 <option>Investments</option>
@@ -131,19 +137,20 @@
             </label>
 
             <label class="form__field">
-              <span>Date</span>
+              <span data-i18n="dateLabel">Date</span>
               <input id="dateInput" type="date" required />
               <small class="error" id="dateError"></small>
             </label>
 
             <div class="form__actions">
-              <button class="btn btn--primary" type="submit" id="submitBtn">
+              <button class="btn btn--primary" type="submit" id="submitBtn" data-i18n="addTransaction">
                 Add Transaction
               </button>
               <button
                 class="btn btn--ghost"
                 type="button"
                 id="cancelEditBtn"
+                data-i18n="cancelEdit"
                 hidden
               >
                 Cancel Edit
@@ -153,12 +160,12 @@
         </div>
 
         <div class="card filters">
-          <h3 class="section-title">Filters & Search</h3>
+          <h3 class="section-title" data-i18n="filtersTitle">Filters & Search</h3>
           <div class="filters__grid">
             <label class="form__field">
-              <span>Category</span>
+              <span data-i18n="filterCategory">Category</span>
               <select id="filterCategory">
-                <option value="all">All categories</option>
+                <option value="all" data-i18n="allCategories">All categories</option>
                 <option>Salary</option>
                 <option>Business</option>
                 <option>Investments</option>
@@ -173,20 +180,21 @@
             </label>
 
             <label class="form__field">
-              <span>Type</span>
+              <span data-i18n="filterType">Type</span>
               <select id="filterType">
-                <option value="all">All</option>
-                <option value="income">Income</option>
-                <option value="expense">Expense</option>
+                <option value="all" data-i18n="filterAll">All</option>
+                <option value="income" data-i18n="filterIncome">Income</option>
+                <option value="expense" data-i18n="filterExpense">Expense</option>
               </select>
             </label>
 
             <label class="form__field form__field--full">
-              <span>Search by title</span>
+              <span data-i18n="searchLabel">Search by title</span>
               <input
                 id="searchInput"
                 type="text"
                 placeholder="Start typing..."
+                data-i18n-placeholder="searchPlaceholder"
               />
             </label>
           </div>
@@ -195,15 +203,15 @@
 
       <section class="card transactions">
         <div class="transactions__header">
-          <h3 class="section-title">Transactions</h3>
+          <h3 class="section-title" data-i18n="transactionsTitle">Transactions</h3>
           <p class="transactions__meta" id="resultsCount">0 results</p>
         </div>
 
         <div class="transactions__list" id="transactionsList">
           <div class="transactions__empty">
             <div class="empty__icon">+</div>
-            <p>No transactions yet. Add your first one to get started.</p>
-            <button class="btn btn--accent empty-add-btn" type="button">
+            <p data-i18n="noTransactions">No transactions yet. Add your first one to get started.</p>
+            <button class="btn btn--accent empty-add-btn" type="button" data-i18n="addFirst">
               Add First Transaction
             </button>
           </div>
@@ -219,13 +227,13 @@
         aria-modal="true"
         aria-labelledby="confirmTitle"
       >
-        <h3 class="section-title" id="confirmTitle">Delete transaction?</h3>
-        <p class="modal__text">This action cannot be undone.</p>
+        <h3 class="section-title" id="confirmTitle" data-i18n="deleteTitle">Delete transaction?</h3>
+        <p class="modal__text" data-i18n="deleteText">This action cannot be undone.</p>
         <div class="modal__actions">
-          <button class="btn btn--ghost" id="cancelDeleteBtn" type="button">
+          <button class="btn btn--ghost" id="cancelDeleteBtn" type="button" data-i18n="cancel">
             Cancel
           </button>
-          <button class="btn btn--danger" id="confirmDeleteBtn" type="button">
+          <button class="btn btn--danger" id="confirmDeleteBtn" type="button" data-i18n="delete">
             Delete
           </button>
         </div>
@@ -235,27 +243,28 @@
     <div class="toast-container" id="toastContainer"></div>
 
     <script src="main.js"></script>
-<div id="cookieTip" style="position:fixed; bottom:20px; left:20px; right:20px; background:#222; color:#fff; padding:16px; border-radius:12px; z-index:9999; display:none; display:flex; gap:16px; align-items:center; flex-wrap:wrap;">
-  <p style="margin:0; font-size:14px; flex:1;">
-    This site uses local storage to save your financial data and preferences. By continuing to use this site, you agree to our <a href="privacy.html" style="color:#60a5fa; text-decoration:underline;">Privacy Policy</a>.
-  </p>
-  <button id="cookieOK" style="background:#4f46e5; color:white; border:none; padding:8px 16px; border-radius:8px; cursor:pointer;">I understand</button>
-</div>
 
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-  const tip = document.getElementById('cookieTip');
-  const btn = document.getElementById('cookieOK');
+    <div id="cookieTip" style="position:fixed; bottom:20px; left:20px; right:20px; background:#222; color:#fff; padding:16px; border-radius:12px; z-index:9999; display:none; gap:16px; align-items:center; flex-wrap:wrap;">
+      <p style="margin:0; font-size:14px; flex:1;">
+        This site uses local storage to save your financial data and preferences. By continuing to use this site, you agree to our <a href="privacy.html" style="color:#60a5fa; text-decoration:underline;">Privacy Policy</a>.
+      </p>
+      <button id="cookieOK" style="background:#4f46e5; color:white; border:none; padding:8px 16px; border-radius:8px; cursor:pointer;">I understand</button>
+    </div>
 
-  if (!localStorage.getItem('cookie_ok')) {
-    tip.style.display = 'flex';
-  }
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const tip = document.getElementById('cookieTip');
+      const btn = document.getElementById('cookieOK');
 
-  btn.onclick = function () {
-    localStorage.setItem('cookie_ok', 'yes');
-    tip.style.display = 'none';
-  };
-});
-</script>
+      if (!localStorage.getItem('cookie_ok')) {
+        tip.style.display = 'flex';
+      }
+
+      btn.onclick = function () {
+        localStorage.setItem('cookie_ok', 'yes');
+        tip.style.display = 'none';
+      };
+    });
+    </script>
   </body>
 </html>
