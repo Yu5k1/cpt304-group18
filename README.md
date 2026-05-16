@@ -1,143 +1,78 @@
 [![codecov](https://codecov.io/gh/Yu5k1/cpt304-group18/branch/main/graph/badge.svg)](https://codecov.io/gh/Yu5k1/cpt304-group18)
-# Advanced Finance Tracker
 
-A portfolio-level personal finance management application built with HTML, CSS, and Vanilla JavaScript.  
-This project was intentionally developed without frameworks or third-party libraries to demonstrate a strong understanding of core front-end fundamentals and application architecture.
+# Advanced Finance Tracker — Group 18
 
-Live Demo:  
-https://amirhosseinln.github.io/advanced-finance-tracker/
+CPT304 Coursework 1 fork of [sptin2002/advanced-finance-tracker](https://github.com/sptin2002/advanced-finance-tracker), enhanced to production-ready standards through a research-led audit and refactor.
 
----
-
-## Preview
-
-<p align="center">
-  <img src="./AmirhosseinProject-Preview.png" alt="Advanced Finance Tracker Preview" width="100%" />
-</p>
+**Live Demo:** https://cpt304-group18.vercel.app
 
 ---
 
-## Overview
+## What We Changed
 
-The Advanced Finance Tracker is a structured, state-driven front-end application designed to simulate a production-style user experience.
+This fork extends the original project with four researched deficiency fixes and five baseline standards. Every change is backed by a cited reference and linked to a pull request.
 
-Rather than focusing solely on UI, the primary goal was to implement:
+### Deficiency Fixes
 
-- Predictable state management  
-- Clear separation between logic and rendering  
-- Functional, modular code organization  
-- Real-world UX behaviors (validation, confirmations, feedback, persistence)  
+| # | Deficiency | Fix | PR |
+|---|-----------|-----|----|
+| 1 | XSS via unsanitized `innerHTML` | `sanitize()` helper using `textContent` output encoding | [#6](https://github.com/Yu5k1/cpt304-group18/pull/6) |
+| 2 | Unvalidated localStorage data | `isValidTransaction()` per-field whitelist guard | [#1](https://github.com/Yu5k1/cpt304-group18/pull/1) |
+| 3 | Inaccessible canvas chart (WCAG 1.1.1) | `role="img"`, `aria-label`, visually hidden fallback table | [#8](https://github.com/Yu5k1/cpt304-group18/pull/8) |
+| 4 | Modal keyboard focus trap (WCAG 2.4.3) | `handleTabKey()` focus loop, Escape key handler, focus restore | [#9](https://github.com/Yu5k1/cpt304-group18/pull/9) |
 
-The application demonstrates how a maintainable front-end system can be built using only native browser APIs.
+### Baseline Standards
 
----
-
-## Core Functionality
-
-### Transaction Management
-
-- Add, edit, and delete transactions using unique identifiers  
-- Inline validation with clear user feedback  
-- Delete confirmation modal to prevent accidental actions  
-
-### Dashboard & Data Visualization
-
-- Real-time summary of total balance, income, and expenses  
-- Monthly grouping of transactions  
-- Income vs Expense bar chart implemented using the Canvas API (no chart libraries)  
-
-### Filtering & Search
-
-- Filter by category  
-- Filter by transaction type (income / expense)  
-- Live search by title  
-- Reset controls for quick state clearing  
-
-### Data Persistence
-
-- Automatic save to LocalStorage  
-- Automatic restoration on page refresh  
-- Dark / Light mode preference persisted between sessions  
-
-### Export Capability
-
-- Export transaction data to CSV format  
-
-### User Experience
-
-- Toast notifications for feedback  
-- Professional empty state with call-to-action  
-- Responsive layout with modern card-based UI  
-- Clean spacing, color hierarchy, and readable typography  
+| Standard | Status | Evidence |
+|----------|--------|----------|
+| Live Uptime (7+ days) | ✅ | Vercel — 16 consecutive Ready deployments from 4 May |
+| Test Coverage ≥ 80% | ✅ | Codecov badge — 85% line coverage, 51 Jest tests |
+| Lighthouse Accessibility ≥ 90 | ✅ | 95 / 100 in desktop mode |
+| Internationalization (i18n) | ✅ | English / Simplified Chinese toggle — [#4](https://github.com/Yu5k1/cpt304-group18/pull/4) |
+| Legal Compliance | ✅ | Cookie consent banner + Privacy Policy page — [#9](https://github.com/Yu5k1/cpt304-group18/pull/9) |
 
 ---
 
-## Architecture & Design Approach
+## Original Features
 
-The application follows a functional architecture with a centralized state model.
+The base application provides:
 
-### State Management
+- Add, edit, and delete transactions with inline validation
+- Real-time dashboard: total balance, income, and expenses
+- Income vs Expense bar chart via Canvas API
+- Filter by category, type, and live title search
+- localStorage persistence and dark/light mode toggle
+- CSV export
 
-All application data is managed through a single state object.  
-UI updates are driven by state changes, ensuring predictable rendering behavior.
-
-### Separation of Concerns
-
-- Business logic and rendering logic are separated  
-- DOM references are centralized  
-- Utility functions handle formatting and reusable behaviors  
-
-### Rendering Strategy
-
-The render cycle is triggered after state mutations, allowing the UI to stay in sync with data without unnecessary reflows or side effects.
-
-### Code Organization Principles
-
-- Minimal global scope pollution  
-- Reusable, composable functions  
-- Clear naming and structured responsibilities  
-- No unnecessary abstractions  
-
-This structure reflects patterns commonly used in small-to-medium scale front-end applications.
+Built with HTML5, CSS, and Vanilla JavaScript — no frameworks or external libraries.
 
 ---
 
-## Technology Stack
+## Repository Structure
 
-- HTML5  
-- Modern CSS (custom properties, responsive layout, component-style structure)  
-- Vanilla JavaScript (ES6+)  
-- Canvas API  
-- LocalStorage API  
-
-No frameworks.  
-No external libraries.  
-No UI toolkits.  
-
----
-
-## What This Project Demonstrates
-
-- Strong command of core JavaScript fundamentals  
-- Ability to build structured front-end systems without frameworks  
-- Practical state management implementation  
-- Manual data visualization using native APIs  
-- Clean UI architecture and UX consideration  
-- Production-oriented thinking in a standalone front-end application  
+```
+├── index.html          # Main application + cookie banner
+├── main.js             # Application logic (sanitize, validation, i18n, focus trap)
+├── style.css           # Styles including .sr-only for accessibility
+├── privacy.html        # Privacy Policy page
+├── locales/
+│   ├── en.json         # English translations
+│   └── zh.json         # Simplified Chinese translations
+├── main.test.js        # Jest test suite (51 tests)
+└── jest.config.js      # Jest configuration
+```
 
 ---
 
-## Possible Extensions
+## References
 
-- Category analytics dashboard  
-- Monthly trend visualizations  
-- Backend integration  
-- Authentication and user accounts  
-- Data import functionality  
+1. R. Chaudhary, B. Meena, and S. Sharma, "XSS vulnerability assessment and prevention in web application," NGCT 2016, doi: 10.1109/NGCT.2016.7877529
+2. S. Nanda, L.-C. Lam, and T.-C. Chiueh, "Web application attack prevention for tiered internet services," IAS 2008, doi: 10.1109/IAS.2008.62
+3. W3C WAI, "Canvas Accessibility," https://www.w3.org/WAI/tutorials/canvas/
+4. W3C, "WCAG 2.1," https://www.w3.org/TR/WCAG21/
 
 ---
 
-## Author
+## Group 18
 
-Amirhossein Latifi Navid  
-Front-End Developer
+XJTLU CPT304 Software Engineering 2, 2026
